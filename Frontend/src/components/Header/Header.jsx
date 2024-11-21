@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Container, Row, Col } from "reactstrap";
 import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../AuthContext";
 import "../../styles/header.css";
 import logoimg from "../../assets/all-images/cars-img/attachment_133814360-removebg-preview.png";
 
@@ -28,31 +29,34 @@ const navLinks = [
     path: "/detailingwork",
     display: "Detailing Work",
   },
-  // {
-  //   path: "/LoginForm",
-  //   display: "Login",
-  // },
+  {
+    path: "/bookings",
+    display: "Bookings",
+  }
 ];
 
 const Header = () => {
   const menuRef = useRef(null);
 
+  const { logout } = useContext(AuthContext);
+
+  const {user, admin} = useContext(AuthContext);
+
+  const [show, notShow] = useState(false);
+
   useEffect(() => {
-
-    const comp1 = document.querySelector(".login-signup");
-    const comp2 = document.querySelector(".logout");
-    if (localStorage.getItem("login")) {
-      comp1.style.display = "none";
-      comp2.style.display = "block";
-    } else {
-      comp1.style.display = "block";
-      comp2.style.display = "none";
+    if (user)
+    {
+      notShow(false);
     }
-  })
+    else
+    {
+      notShow(true);
+    }
+  }, [user])
 
-  const HandleLogout = () => {
-      localStorage.removeItem("login");
-      window.location.reload();
+  const HandleLogout = async () => {
+    await logout();
   }
 
   const toggleMenu = () => menuRef.current.classList.toggle("menu__active");
@@ -65,14 +69,14 @@ const Header = () => {
           <Row>
             <Col lg="6" md="6" sm="6">
               <div className="header__top__left">
-                <span>RENT & MODIFICATION</span>
+                <span>RENTAL SERVICE</span>
                 <span className="header__top__help">
                   <i className="ri-phone-fill"></i> 91-5152xxxxxx
                 </span>
               </div>
             </Col>
 
-            <Col lg="6" md="6" sm="6" className="login-signup">
+            {show && <Col lg="6" md="6" sm="6" className="login-signup">
               <div className="header__top__right d-flex align-items-center justify-content-end gap-3">
                 <Link to="./login" className=" d-flex align-items-center gap-1">
                   <i className="ri-login-circle-line"></i> Login
@@ -82,14 +86,17 @@ const Header = () => {
                   <i className="ri-user-line"></i> Register
                 </Link>
               </div>
-            </Col>
-            <Col lg="6" md="6" sm="6" className="logout">
+            </Col>}
+            {!show && <Col lg="6" md="6" sm="6" className="logout">
               <div className="header__top__right d-flex align-items-center justify-content-end gap-3">
+                {admin && <Link to={"/messages"} className=" d-flex align-items-center gap-1">
+                  <i className="ri-login-circle-line"></i> Messages
+                </Link>}
                 <Link onClick={HandleLogout} className=" d-flex align-items-center gap-1">
                   <i className="ri-login-circle-line"></i> Logout
                 </Link>
               </div>
-            </Col>
+            </Col>}
           </Row>
         </Container>
       </div>
@@ -114,22 +121,22 @@ const Header = () => {
             <Col lg="3" md="3" sm="4">
               <div className="header__location d-flex align-items-center gap-2">
                 <span>
-                  <i className="ri-earth-line"></i>
+                  {/* <i className="ri-earth-line"></i> */}
                 </span>
                 <div className="header__location-content">
-                  <h4>India<br/>Mumbai</h4>
+                  {/* <h4>India<br/>Mumbai</h4> */}
                                  
                 </div>
               </div>
             </Col>
 
-            <Col lg="3" md="3" sm="4">
+            <Col lg="3" md="3" sm="7">
               <div className="header__location d-flex align-items-center gap-2">
                 <span>
-                  <i className="ri-time-line"></i>
+                  {/* <i className="ri-time-line"></i> */}
                 </span>
                 <div className="header__location-content">
-                  <h4>24x7 Available</h4>
+                  {/* <h4>24x7 Available</h4> */}
                   
                 </div>
               </div>
