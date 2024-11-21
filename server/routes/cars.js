@@ -178,3 +178,5 @@ router.delete("/:id", async (req, res) => {
     console.error('Error during deleting car:', error);
   }
 });
+
+module.exports = router;
