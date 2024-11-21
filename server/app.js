@@ -3,6 +3,8 @@ const express = require('express');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const mongoose = require('mongoose');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
+
 
 const app = express();
 
@@ -13,6 +15,10 @@ app.use(express.json());
 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/contact', require('./routes/contact'));
+
+
+app.use('/api/book', require('./routes/book'));
+app.use('/api/cars', upload.single('file'), require('./routes/cars'));
 
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
