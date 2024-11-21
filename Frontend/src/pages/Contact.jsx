@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Form, FormGroup, Input } from "reactstrap";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
 
-
 import "../styles/contact.css";
+import { AuthContext } from "../components/AuthContext";
 
 const socialLinks = [
   {
@@ -28,13 +28,31 @@ const socialLinks = [
 
 const Contact = () => {
   const navigate = useNavigate();
-  const handleSend = (e) => {
+
+  const {user, sendMessage} = useContext(AuthContext);
+
+  const [{name, email, message}, setValues] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const handleSend = async (e) => {
     e.preventDefault();
-    if (localStorage.getItem("login")) {
-      alert("Message Sent");
-      window.location.reload();
-    } else {
-      alert("Please Login to send message");
+
+    if(user)
+    {
+      console.log(name, email, message);
+      await sendMessage(name, email, message);
+      setValues({
+        name: "",
+        email: "",
+        message: "",
+      });
+    }
+    else
+    {
+      alert("You need to login first to send message");
       navigate("/login");
     }
   }
@@ -48,22 +66,23 @@ const Contact = () => {
             <Col lg="7" md="7">
               <h6 className="fw-bold mb-4">Get In Touch</h6>
 
-              <Form>
+              <Form onSubmit={handleSend}>
                 <FormGroup className="contact__form">
-                  <Input placeholder="Your Name" type="text" />
+                  <Input value={name} onChange={(e) => {setValues({ name : e.target.value, email, message})}} placeholder="Your Name" type="text" />
                 </FormGroup>
                 <FormGroup className="contact__form">
-                  <Input placeholder="Email" type="email" />
+                  <Input value={email} onChange={(e) => {setValues({email : e.target.value, message, name})}} placeholder="Email" type="email" />
                 </FormGroup>
                 <FormGroup className="contact__form">
                   <textarea
+                  value={message} onChange={(e) => {setValues({message : e.target.value, email, name})}}
                     rows="5"
                     placeholder="Message"
                     className="textarea"
                   ></textarea>
                 </FormGroup>
 
-                <button onClick={handleSend} className=" contact__btn" type="submit">
+                <button className=" contact__btn" type="submit">
                   Send Message
                 </button>
               </Form>
