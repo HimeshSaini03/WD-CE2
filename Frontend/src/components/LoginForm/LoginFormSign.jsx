@@ -1,95 +1,60 @@
-import { useState } from "react";
-import { Link, useNavigate } from 'react-router-dom';
-import "./LoginForm.css"
+import "./SignUpForm.css"
+import React, { useContext, useEffect, useState } from 'react';
+import { AuthContext } from "../AuthContext.jsx";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function Login() {
+
+function SignupForm() {
+  const { signup } = useContext(AuthContext);
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const {user} = useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  useEffect(() => {
+    if (user)
+      {
+        alert("You are Already Logged In !!");
+        navigate("/home");
+      }
+  }, [])
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value,
-    });
-  };
-
-  const getUserDataFromLocalStorage = () => {
-    return JSON.parse(localStorage.getItem("users")) || [];
-  };
-
-  const handleSumbit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.email || !formData.password) {
-      setError('Please fill in all fields');
-      return;
+    const res = await signup(username, email, password);
+
+    if (res.error != null && res.error != undefined) {
+      alert(res.error);
     }
-
-    setLoading(true);
-    window.localStorage.setItem("login", true);
-    setError("");
-
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      const users = getUserDataFromLocalStorage();
-      const user = users.find(user => user.email === formData.email && user.password === formData.password);
-
-      if (user) {
-        navigate("/"); 
-        window.location.reload();
-      } else {
-        setError("Invalid email or password");
-      }
-    } catch (err) {
-      setError("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
+    else
+    {
+      alert("Signup successful");
+      setUsername('');
+      setEmail('');
+      setPassword('');
+      navigate('/home');
     }
-  }
+  };
 
   return (
-    <div className='signUpContainer'>
-      <h1 className='signUpTitle'>Sign In</h1>
-
-      <form onSubmit={handleSumbit} className='signUpForm'>
-        <label>Email: </label>
-        <input 
-          type="email" 
-          placeholder='Enter your Email here' 
-          id='email'  
-          onChange={handleChange}
-          className='signUpInput' 
-        />
-
-        <label>Password: </label>
-        <input 
-          type="password" 
-          placeholder='Enter password' 
-          id='password'
-          onChange={handleChange}
-          className='signUpInput' 
-        />
-
-        <button disabled={loading} className='signUpButton'>
-          {loading ? 'Loading....' : 'Sign In'}
-        </button>
-      </form>
-
-      <hr className='signUpHr' />
-
-      <div className='signUpLink'>
-        <p>Don't have an account?</p>
-        <Link to={"/signup"} className='signUpLinkText'>
-          Sign Up
-        </Link>
+    <div className="signup-container"> 
+    <h1>Sign Up</h1>
+      <form onSubmit={handleSubmit} className="SignUP">
+        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+        <button type="submit">Sign Up</button>
+    </form>
+    <div className="noaccount">
+      <p>Already have an account?</p>
+      <Link to={"/login"} className="signUp-btn">Login</Link>
       </div>
-
-      {error && <p className='signUpError'>{error}</p>}
     </div>
-  )
+  );
 }
+
+export default SignupForm;
