@@ -51,7 +51,6 @@ const BookingForm = ({ bookingInfo, handleInputChange }) => {
           onChange={handleInputChange}
         />
       </FormGroup>
-
       <FormGroup className="booking__form d-inline-block me-4 mb-4">
         <input
           type="text"
@@ -120,6 +119,16 @@ const BookingForm = ({ bookingInfo, handleInputChange }) => {
           className="time__picker"
           required
           value={bookingInfo.journeyTime}
+          onChange={handleInputChange}
+        />
+      </FormGroup>
+      <FormGroup className="booking__form d-inline-block me-4 mb-4">
+        <input
+          type="number"
+          name="rentDays"
+          placeholder="Rent Days"
+          required
+          value={bookingInfo.rentDays}
           onChange={handleInputChange}
         />
       </FormGroup>

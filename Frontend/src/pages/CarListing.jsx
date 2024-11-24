@@ -1,13 +1,62 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "reactstrap";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
 import CarItem from "../components/UI/CarItem";
-import carData from "../assets/data/carData";
+import { AddCar } from "../components/Admin/AddCar";
 
 const CarListing = () => {
   const [sortBy, setSortBy] = useState(""); // State variable to hold sorting option
-  const [sortedCars, setSortedCars] = useState(carData); // State variable to hold sorted car data
+  const [sortedCars, setSortedCars] = useState(null); // State variable to hold sorted car data
+
+  const [cars, setCars] = useState(null);
+  const [editCar, setEditCar] = useState({
+    brand: "",
+    rating: 0,
+    carName: "",
+    model: "",
+    price: 0,
+    speed: 0,
+    gps: false,
+    seatType: "",
+    automatic: false,
+    description: "",
+    file: null,
+  });
+
+  useEffect(() => {
+
+    const fetchCars = async () => {
+
+      const response = await fetch("http://localhost:3000/api/cars");
+      const data = await response.json();
+      console.log(data); 
+      setCars(data);
+      setSortedCars(data);
+    }
+
+    fetchCars();
+  }, [])
+
+  const handleEdit = async(id) => {
+    const car = cars.find(car => car._id === id);
+    setEditCar(car);
+  }
+
+
+  const handleDelete = async (id) => {
+
+    if (!confirm("Are you sure you want to delete this car?")) {
+      return;
+    }
+
+    const response = await fetch(`http://localhost:3000/api/cars/${id}`, {
+        method: 'DELETE'
+    }).then((res) => res.json()).then((data) => {
+        alert(data.message);
+        setSortedCars(sortedCars.filter(car => car._id !== id));
+    });
+}
 
   // Function to handle sorting logic
   const handleSort = (e) => {
@@ -46,10 +95,12 @@ const CarListing = () => {
               </div>
             </Col>
 
-            {sortedCars.map((item) => (
-              <CarItem item={item} key={item.id} />
+            {sortedCars && sortedCars.map((item) => (
+              <CarItem delete={handleDelete} edit={handleEdit} item={item} key={item._id} />
             ))}
           </Row>
+
+          <AddCar curr={editCar} />
         </Container>
       </section>
     </Helmet>
