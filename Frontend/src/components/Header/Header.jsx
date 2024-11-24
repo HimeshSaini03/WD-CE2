@@ -69,7 +69,7 @@ const Header = () => {
           <Row>
             <Col lg="6" md="6" sm="6">
               <div className="header__top__left">
-                <span>RENTAL SERVICE</span>
+                <span>RENT & MODIFICATION</span>
                 <span className="header__top__help">
                   <i className="ri-phone-fill"></i> 91-5152xxxxxx
                 </span>
@@ -121,22 +121,22 @@ const Header = () => {
             <Col lg="3" md="3" sm="4">
               <div className="header__location d-flex align-items-center gap-2">
                 <span>
-                  {/* <i className="ri-earth-line"></i> */}
+                  <i className="ri-earth-line"></i>
                 </span>
                 <div className="header__location-content">
-                  {/* <h4>India<br/>Mumbai</h4> */}
+                  <h4>India<br/>Mumbai</h4>
                                  
                 </div>
               </div>
             </Col>
 
-            <Col lg="3" md="3" sm="7">
+            <Col lg="3" md="3" sm="4">
               <div className="header__location d-flex align-items-center gap-2">
                 <span>
-                  {/* <i className="ri-time-line"></i> */}
+                  <i className="ri-time-line"></i>
                 </span>
                 <div className="header__location-content">
-                  {/* <h4>24x7 Available</h4> */}
+                  <h4>24x7 Available</h4>
                   
                 </div>
               </div>

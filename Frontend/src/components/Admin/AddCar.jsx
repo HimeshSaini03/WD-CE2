@@ -99,7 +99,7 @@ export const AddCar = ({curr}) => {
 
     if (admin) {
         return (
-            <div>
+            <div className='add-car'>
                 <h1>Add Car</h1>
 
                 <Form>

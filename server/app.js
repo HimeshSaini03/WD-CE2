@@ -4,21 +4,22 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const mongoose = require('mongoose');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-
+const upload = require('./utils/multer.utils');
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
+app.use(express.static('uploads'));
 
-
+console.log("Server running 1...");
 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/contact', require('./routes/contact'));
-
-
 app.use('/api/book', require('./routes/book'));
+app.use('/api/user', require('./routes/user'));
 app.use('/api/cars', upload.single('file'), require('./routes/cars'));
+
+console.log("Server running 2...");
 
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
@@ -37,8 +38,8 @@ const paymentSchema = new mongoose.Schema({
 });
 
 const Payment = mongoose.model('Payment', paymentSchema);
+///////////////////////////////////////////////////////////////
 
-app.set('view engine', 'ejs');
 
 app.get('/checkout', (req, res) => {
     res.render('index.ejs');
