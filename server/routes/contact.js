@@ -13,6 +13,7 @@ router.get("/", async (req, res) => {
         console.error('Error during fetching messages:', error);
     }
 });
+
 router.post("/", async (req, res) => {
     try
     {

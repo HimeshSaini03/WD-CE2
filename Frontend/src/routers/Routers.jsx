@@ -6,15 +6,16 @@ import CarListing from "../pages/CarListing";
 import CarDetails from "../pages/CarDetails";
 import NotFound from "../pages/NotFound";
 import Contact from "../pages/Contact";
-import Detailingcars from "../pages/Detainlingcar"//new
+import Detailingcars from "../pages/Detainlingcar"
 import LoginForm from "../components/LoginForm/LoginForm";
 import Login from "../components/LoginForm/LoginFormSign";
 import PaymentForm from "../pages/Payment";
 import Blog from "../pages/Blog";
 import PrivacyPolicy from "../pages/Privacy";
 import BlogItem from "../components/UI/BlogItem";
-import Sucess from "../components/Sucess";
-import Cancel from "../components/Cancel";
+import Messages from "../pages/Messages";
+import Checkout from "../pages/Checkout";
+import Bookings from "../pages/Bookings";
 
 const Routers = () => {
   return (
@@ -28,13 +29,14 @@ const Routers = () => {
       <Route path="/contact" element={<Contact />} />
       <Route path="*" element={<NotFound />} />
       <Route path="/detailingwork" element={<Detailingcars />} />
-      <Route path="/signUp" element={<LoginForm />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/signUp" element={<Login/>} />
+      <Route path="/login" element={<LoginForm />} />
       <Route path="/payment" element={<PaymentForm />} />
       <Route path="/blogs" element={<Blog />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />
-       {/* <Route path="/sucess" element={<Sucess />} /> */}
-      {/* <Route path="/cancel" element={<Cancel />} />  */}
+      <Route path="/messages" element={<Messages />} />
+      <Route path='/checkout' element={<Checkout />} />
+      <Route path="/bookings" element={<Bookings />} />
     </Routes>
   );
 };

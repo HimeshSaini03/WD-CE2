@@ -1,7 +1,9 @@
 const express = require('express');
 const Car = require('../models/Car');
+const User = require('../models/User');
 const fs = require('fs');
 const path = require('path');
+const Booking = require('../models/Booking');
 
 const router = express.Router();
 
@@ -57,6 +59,39 @@ router.get("/data/:id", async (req, res) => {
   catch (error) {
     res.status(500).send({error: 'Error during fetching car'}); 
     console.error('Error during fetching car:', error);
+  }
+});
+
+router.get("/booked/:id", async (req, res) => {
+  try
+  {
+    const user = await User.find({ _id: req.params.id });
+
+    if (!user) {
+      return res.status(404).send({error: 'User not found'});
+    }
+
+    console.log('user:', user[0].bookings);
+
+    let cars = [];
+
+    for (let id in user[0].bookings)
+    {
+      console.log('id:', id);
+      const booking = await Booking.findById(user[0].bookings[id]);
+
+      if (!booking) {
+        return res.status(404).send({error: 'Car not found'});
+      } 
+
+      cars.push(booking);
+    }
+
+    res.status(200).send(cars);
+  }
+  catch (error) {
+    res.status(500).send({error: 'Error during fetching cars'}); 
+    console.error('Error during fetching cars:', error);
   }
 });
 
@@ -153,6 +188,7 @@ router.put("/:id", async (req, res) => {
     console.error('Error during updating car:', error);
   }
 });
+
 /*  DELETE ROUTES  */
 router.delete("/:id", async (req, res) => {
   try
@@ -178,5 +214,4 @@ router.delete("/:id", async (req, res) => {
     console.error('Error during deleting car:', error);
   }
 });
-
 module.exports = router;
