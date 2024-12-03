@@ -54,7 +54,7 @@ const Home = () => {
         </Container>
       </section>
       {/* =========== car offer section ============= */}
-      <section>
+      {/* <section>
         <Container>
           <Row>
             <Col lg="12" className="text-center mb-5">
@@ -67,7 +67,7 @@ const Home = () => {
             ))}
           </Row>
         </Container>
-      </section>
+      </section> */}
       {/* =========== become a driver section ============ */}
       <BecomeDriverSection />
 
