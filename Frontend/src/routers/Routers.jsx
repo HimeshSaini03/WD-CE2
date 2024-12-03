@@ -16,6 +16,8 @@ import BlogItem from "../components/UI/BlogItem";
 import Messages from "../pages/Messages";
 import Checkout from "../pages/Checkout";
 import Bookings from "../pages/Bookings";
+import SellMyCar from "../pages/SellMyCar";
+
 
 const Routers = () => {
   return (
@@ -37,6 +39,8 @@ const Routers = () => {
       <Route path="/messages" element={<Messages />} />
       <Route path='/checkout' element={<Checkout />} />
       <Route path="/bookings" element={<Bookings />} />
+      <Route path="/sellmycar" element={<SellMyCar />} />
+
     </Routes>
   );
 };

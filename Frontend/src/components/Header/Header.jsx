@@ -32,7 +32,11 @@ const navLinks = [
   {
     path: "/bookings",
     display: "Bookings",
-  }
+  },
+  {
+    path: "/sellmycar",
+    display: "Sell My Car", // Added Sell My Car
+  },
 ];
 
 const Header = () => {
